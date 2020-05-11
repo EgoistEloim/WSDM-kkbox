@@ -1,7 +1,5 @@
 import numpy as np
 import pandas as pd
-import lightgbm as lgb
-from pyspark.sql import SparkSession
 from IPython import embed
 import os
 
