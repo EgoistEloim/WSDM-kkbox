@@ -7,8 +7,8 @@ from tqdm import tqdm
 import datetime
 
 print('Loading data...')
-train_data = pd.read_csv('/home/paperspace/kkbox/data/fe_train.csv')
-test_data = pd.read_csv('/home/paperspace/kkbox/data/fe_train.csv')
+train_data = pd.read_csv('~/kkbox/data/fe_train.csv')
+test_data = pd.read_csv('~/kkbox/data/fe_train.csv')
 print('Loading data finished')
 
 
@@ -48,20 +48,20 @@ def train(train_data, test_data, num_rounds, learn_rate, boosting, device):
     # model training
     print('start model training')
     model_gdbt_local = lgb.train(params_gdbt, train_set=d_train, valid_sets=watchlist, verbose_eval=5,
-                                 early_stopping_rounds=5)  # 保存训练后的模型
+                                 early_stopping_rounds=5)  
     print('model training finished')
 
-    local_result = model_gdbt_local.predict(train_val.drop('target', axis=1))  # 本地划分的测试集预测的标签结果
-    local_score = metrics.roc_auc_score(train_val['target'], local_result)  # 真实标签和预测标签对比，算出AUC，AUC越接近0.84，线上评测效果越好
+    local_result = model_gdbt_local.predict(train_val.drop('target', axis=1))  
+    local_score = metrics.roc_auc_score(train_val['target'], local_result)  
     print(local_score)
 
     theTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     model_gdbt_local.save_model('/home/paperspace/kkbox/result/{}.model'.format(theTime))
-    f = open('/home/paperspace/kkbox/result/logs.log', 'a+')
+    f = open('~/kkbox/result/logs.log', 'a+')
     f.write('Update Time: {}\n'.format(theTime))
     f.write('Model Parameters: {}\n'.format(params_gdbt))
     f.write('Model AUC: {}\n'.format(local_score))
-    f.write('Model Path: {}\n'.format('/home/paperspace/kkbox/result/{}.model'.format(theTime)))
+    f.write('Model Path: {}\n'.format('~/kkbox/result/{}.model'.format(theTime)))
     f.write('\n\n')
     f.close()
 
